@@ -101,7 +101,8 @@ func (aa *Proxy) InitConf() (*ssh.ServerConfig, error) {
 		aa.ListenAddr = ":22"
 	}
 	if aa.TargetAddr == "" {
-		aa.TargetAddr = "{uname}-0.vsc-{sname}-dev.ws{nname}.svc.cluster.local:22"
+		aa.TargetAddr = "{uname}:22"
+		// aa.TargetAddr = "{uname}-0.vsc-{sname}-dev.ws{nname}.svc.cluster.local:22"
 	}
 	return conf, nil
 }

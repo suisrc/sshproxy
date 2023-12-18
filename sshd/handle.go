@@ -49,8 +49,6 @@ func (aa *Proxy) HandleSshConn(ssc net.Conn, config *ssh.ServerConfig) {
 		logrus.Error("failed to get user name from ssh connection", ssc.RemoteAddr().String())
 		return
 	}
-	// https://leodev-7000-mc03.dev.local -> leodev-7000-mc03/user:pass@dev.local -p port
-	// leodev-7000-mc03/user:pass => user: user, pass: pass, addr: {uname}-0.vsc-{sname}-dev.ws{pname}.svc.cluster.local
 
 	// 密码
 	attr1 := strings.SplitN(cUser, ":", 2)
@@ -68,7 +66,7 @@ func (aa *Proxy) HandleSshConn(ssc net.Conn, config *ssh.ServerConfig) {
 	}
 	tName := attr2[0]
 
-	// 地址
+	// 地址， uname-port-sname|nname, port会被忽略
 	tAddr := aa.TargetAddr
 	attr3 := strings.SplitN(attr2[0], "-", 3)
 	if len(attr3) == 3 {

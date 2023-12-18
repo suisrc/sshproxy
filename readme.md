@@ -9,6 +9,25 @@ server-name[/user-name]@host
 
 执行业务应用的分流和监控
 
+## 测试
+
+```sh
+# 测试命令：
+# 服务: 
+TARGET_ADDR={uname}:22 go run main.go
+# 终端: 
+ssh x.x.x.x/root:pass@127.0.0.1
+```
+
+## 测试的TARGET_ADDR
+
+```bash
+{uname}-{port}-{sname}{nname}/user:pass@127.0.0.1
+# 相当于, 这个是特殊用来解决集群内部 suisrc/webtop | suisrc/vscode 应用 ssh 连接问题
+# 但是 {uname}:22 是默认值存在
+ssh user@{uname}-0.vsc-{sname}-dev.ws{nname}.svc.cluster.local
+```
+
 ## golang
 
 ``` bash
