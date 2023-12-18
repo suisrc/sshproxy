@@ -14,12 +14,12 @@ import (
 // 终端: ssh x.x.x.x/root:pass@127.0.0.1
 func main() {
 	sshp := &sshd.Proxy{
-		CertsPath:  os.Getenv("CERTS_PATH"),
+		KeysFolder: os.Getenv("KEYS_FOLDER"),
 		ListenAddr: os.Getenv("LISTEN_ADDR"),
 		TargetAddr: os.Getenv("TARGET_ADDR"),
 	}
 	logrus.Info("ssh proxy server is starting...")
-	logrus.Info("certs path: ", sshp.CertsPath)
+	logrus.Info("keys fodler: ", sshp.KeysFolder)
 	logrus.Info("listen addr: ", sshp.ListenAddr)
 	logrus.Info("target addr: ", sshp.TargetAddr)
 

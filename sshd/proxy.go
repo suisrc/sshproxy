@@ -13,7 +13,7 @@ import (
 
 // SshProxy 接口
 type Proxy struct {
-	CertsPath  string
+	KeysFolder string
 	ListenAddr string
 	TargetAddr string
 	Listener   net.Listener
@@ -84,16 +84,16 @@ func (aa *Proxy) InitConf() (*ssh.ServerConfig, error) {
 	// 服务配置
 	conf := &ssh.ServerConfig{NoClientAuth: true}
 	// 加载密钥, DSA 密钥已被弃用, ssh-keygen -A -f "__keys/"
-	if aa.CertsPath == "" {
-		aa.CertsPath = "/etc/ssh"
+	if aa.KeysFolder == "" {
+		aa.KeysFolder = "/etc/ssh"
 	}
-	if err := aa.AddHotKey(conf, aa.CertsPath+"/ssh_host_rsa_key"); err != nil {
+	if err := aa.AddHotKey(conf, aa.KeysFolder+"/ssh_host_rsa_key"); err != nil {
 		return nil, err
 	}
-	if err := aa.AddHotKey(conf, aa.CertsPath+"/ssh_host_ecdsa_key"); err != nil {
+	if err := aa.AddHotKey(conf, aa.KeysFolder+"/ssh_host_ecdsa_key"); err != nil {
 		return nil, err
 	}
-	if err := aa.AddHotKey(conf, aa.CertsPath+"/ssh_host_ed25519_key"); err != nil {
+	if err := aa.AddHotKey(conf, aa.KeysFolder+"/ssh_host_ed25519_key"); err != nil {
 		return nil, err
 	}
 	// 服务监听地址
