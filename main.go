@@ -2,7 +2,8 @@ package main
 
 import (
 	"os"
-	"sshproxy/sshd"
+
+	"github.com/suisrc/sshproxy/sshd"
 
 	"github.com/sirupsen/logrus"
 )
