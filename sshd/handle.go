@@ -66,25 +66,32 @@ func (aa *Proxy) HandleSshConn(ssc net.Conn, config *ssh.ServerConfig) {
 	}
 	tName := attr2[0]
 
-	// 地址， uname-port-sname|nname, port会被忽略
+	// 地址， host-port-ssvc[snum]
 	tAddr := aa.TargetAddr
 	attr3 := strings.SplitN(attr2[0], "-", 3)
 	if len(attr3) == 3 {
-		// uname, sname, nname <- attr3[...]
+		// host, port, ssvc[snum] <- attr3[...]
+		attr3 = append(attr3, "")
+		// find ssvc[snum]
 		for i := 0; i < len(attr3[2]); i++ {
 			if attr3[2][i] < '0' || attr3[2][i] > '9' {
 				continue
 			}
-			attr3[1] = attr3[2][:i]
-			attr3[2] = attr3[2][i:]
+			attr3[3] = attr3[2][i:] // snum
+			attr3[2] = attr3[2][:i] // ssvc
 			break
 		}
-		tAddr = strings.ReplaceAll(tAddr, "{uname}", attr3[0])
-		tAddr = strings.ReplaceAll(tAddr, "{sname}", attr3[1])
-		tAddr = strings.ReplaceAll(tAddr, "{nname}", attr3[2])
+		tAddr = strings.ReplaceAll(tAddr, "{host}", attr3[0])
+		tAddr = strings.ReplaceAll(tAddr, "{port}", attr3[1])
+		tAddr = strings.ReplaceAll(tAddr, "{ssvc}", attr3[2])
+		tAddr = strings.ReplaceAll(tAddr, "{snum}", attr3[3])
+	} else if len(attr3) == 2 {
+		// host, port <- attr3[...]
+		tAddr = strings.ReplaceAll(tAddr, "{host}", attr3[0])
+		tAddr = strings.ReplaceAll(tAddr, "{port}", attr3[1])
 	} else {
-		// uname <- attr2[0]
-		tAddr = strings.ReplaceAll(tAddr, "{uname}", attr2[0])
+		// host <- attr2[0]
+		tAddr = strings.ReplaceAll(tAddr, "{host}", attr2[0])
 	}
 
 	// 标签
